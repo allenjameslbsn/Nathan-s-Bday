@@ -35,7 +35,6 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: all 0.3s ease;
         }
 
-        /* Added Volume Warning Style */
         #volWarning {
             position: fixed; bottom: 28px; left: 80px; background: rgba(0,0,0,0.7);
             color: white; padding: 5px 12px; border-radius: 10px; font-size: 0.7rem;
@@ -272,10 +271,8 @@
         const happyBirthday = "HBD.mp3"; 
         const audioEl = document.getElementById('bgMusic');
         
-        // Lowered default volume to prevent startling (10%)
         audioEl.volume = 0.1;
 
-        // Show volume warning on load
         window.addEventListener('load', () => {
             const warn = document.getElementById('volWarning');
             warn.style.opacity = "1";
@@ -287,7 +284,6 @@
                 audioEl.src = isBirthday ? happyBirthday : wheelsOnBus;
                 audioEl.play().catch(() => {});
                 musicStarted = true;
-                // Hide warning once music actually starts
                 document.getElementById('volWarning').style.opacity = "0";
             }
         }
@@ -357,6 +353,7 @@
             if(editingId) {
                 wishesRef.child(editingId).update(postData).then(() => {
                     showCocoNotify("Wish updated successfully! ✨");
+                    setTimeout(() => { location.reload(); }, 1500);
                 });
                 editingId = null;
                 document.getElementById('submitBtn').innerText = "POST MESSAGE";
@@ -367,12 +364,17 @@
                     myPosts.push(newRef.key);
                     localStorage.setItem('myNathanWishes', JSON.stringify(myPosts));
                     showCocoNotify("Your wish is now in the guestbook! 🍉");
+                    confetti({ particleCount: 100 });
+                    
+                    // Automatically refresh after 2 seconds
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
                 });
             }
             document.getElementById('vName').value = "";
             document.getElementById('vMsg').value = "";
             retakeRec();
-            confetti({ particleCount: 100 });
         }
 
         function deletePost(id) { if(confirm("Delete wish?")) wishesRef.child(id).remove(); }
