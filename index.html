@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JJ's Year One | The Big One</title>
+    <title>Nathan's Year One | The Big One</title>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -147,7 +147,7 @@
         <div class="floating-logo"><img src="Cocomelon-Logo.png" alt="Logo"></div>
         <h1>THE BIG ONE</h1>
         <div class="hero-details">
-            <i class="fas fa-calendar-star"></i> February 6, 2026 • JJ's Special Day
+            <i class="fas fa-calendar-star"></i> February 6, 2026 • Nathan's Special Day
         </div>
         
         <div class="countdown">
@@ -225,7 +225,7 @@
             { title: "4 Months", desc: "Grabbing toys and finding your voice. Such a loud baby!", img: "4.jpg" },
             { title: "5 Months", desc: "Almost sitting up! You love watching the birds outside.", img: "5.jpg" },
             { title: "6 Months", desc: "Half a year! Your first taste of solid food was a hit.", img: "6.jpg" },
-            { title: "7 Months", desc: "Sitting up tall and playing with your favorite JJ toys.", img: "7.jpg" },
+            { title: "7 Months", desc: "Sitting up tall and playing with your favorite Nathan toys.", img: "7.jpg" },
             { title: "8 Months", desc: "Crawling fast! No corner of the house is safe now.", img: "8.jpg" },
             { title: "9 Months", desc: "Pulling yourself up on the sofa. Standing tall!", img: "9.jpg" },
             { title: "10 Months", desc: "Waving 'Hi' and 'Bye'. You're such a social butterfly.", img: "10.jpg" },
@@ -309,7 +309,7 @@
         function downloadPDF() {
             if(document.getElementById('vPass').value !== "natoynakamahalmhal") { alert("Wrong Password"); return; }
             const { jsPDF } = window.jspdf; const doc = new jsPDF();
-            doc.text("JJ'S BIG ONE - WISHES", 20, 20);
+            doc.text("NATHAN'S BIG ONE - WISHES", 20, 20);
             let y = 35;
             wishes.forEach(w => {
                 if(y > 270) { doc.addPage(); y = 20; }
