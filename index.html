@@ -15,8 +15,7 @@
     <style>
         :root {
             --coco-gradient: linear-gradient(135deg, #a8e063 0%, #20e3b2 100%);
-            --modern-purple-blue: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            --glass-bg: rgba(255, 255, 255, 0.85);
+            --coco-red: #ff4d4d; --coco-green: #2ecc71; --coco-blue: #3498db; --coco-yellow: #feca57;
             --film-black: #2d3436;
             --c-red: #ff4d4d; --c-orange: #ff9f43; --c-yellow: #feca57; --c-green: #2ecc71; --c-blue: #48dbfb;
         }
@@ -28,136 +27,138 @@
             overflow-x: hidden; color: #2d3436; 
         }
 
-        /* --- NAVBAR --- */
+        #musicToggle {
+            position: fixed; bottom: 20px; left: 20px; z-index: 10001;
+            background: white; border: 3px solid var(--coco-green);
+            width: 50px; height: 50px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); transition: all 0.3s ease;
+        }
+
         nav {
             position: sticky; top: 0; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px);
             padding: 12px 20px; display: flex; align-items: center; justify-content: center; z-index: 1000; 
             border-bottom: 2px solid rgba(255,255,255,0.4);
         }
-        .coco-text { font-family: 'Fredoka', sans-serif; font-size: 1.5rem; font-weight: 600; }
+        .coco-text { font-family: 'Fredoka', sans-serif; font-size: 1.5rem; font-weight: 600; cursor: pointer; }
         .coco-text span:nth-child(1) { color: var(--c-red); }
         .coco-text span:nth-child(2) { color: var(--c-orange); }
         .coco-text span:nth-child(3) { color: var(--c-yellow); }
         .coco-text span:nth-child(4) { color: var(--c-green); }
         .coco-text span:nth-child(5) { color: var(--c-blue); }
-        .coco-text span:nth-child(6) { color: var(--c-red); }
-        .coco-text span:nth-child(7) { color: var(--c-orange); }
-        .coco-text span:nth-child(8) { color: var(--c-green); }
-        .coco-text span:nth-child(9) { color: var(--c-blue); }
 
-        /* --- HERO --- */
         .hero { padding: 40px 20px; text-align: center; }
-        .floating-logo { width: 140px; margin: 0 auto 15px; animation: float 4s ease-in-out infinite; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.1)); }
+        .floating-logo { width: 140px; margin: 0 auto 15px; animation: float 4s ease-in-out infinite; }
         .floating-logo img { width: 100%; }
         h1 { font-family: 'Fredoka'; color: white; font-size: 2.5rem; margin: 0; text-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         .hero-details { background: rgba(255,255,255,0.2); display: inline-block; padding: 8px 20px; border-radius: 50px; color: white; margin-top: 15px; font-weight: 400; backdrop-filter: blur(5px); }
 
-        /* --- COUNTDOWN --- */
         .countdown { display: flex; justify-content: center; gap: 10px; margin: 25px 0; }
         .count-box { background: white; padding: 10px; border-radius: 12px; min-width: 65px; box-shadow: 0 8px 15px rgba(0,0,0,0.05); }
         .count-num { display: block; font-size: 1.3rem; font-weight: 600; color: #6366f1; font-family: 'Fredoka'; }
         .count-lab { font-size: 0.6rem; text-transform: uppercase; color: #999; }
 
-        /* --- FILM GALLERY --- */
-        .gallery-container { position: relative; width: 100%; padding: 60px 0; overflow: hidden; }
-        .gallery-container::before { content: ''; position: absolute; top: 75px; left: -10%; width: 120%; height: 2px; background: rgba(0,0,0,0.1); z-index: 1; }
-        .slider-track { display: flex; align-items: flex-start; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); padding: 0 10%; }
+        .gallery-container { position: relative; width: 100%; padding: 80px 0 60px 0; overflow: hidden; }
+        .slider-track { display: flex; align-items: flex-start; transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1); padding: 0 10%; position: relative; }
         
-        .slide { min-width: 85%; margin: 0 15px; transition: all 0.6s ease; filter: blur(4px) grayscale(0.5); opacity: 0.4; transform: scale(0.8); position: relative; z-index: 2; }
-        .slide.active { filter: blur(0) grayscale(0); opacity: 1; transform: scale(1); animation: activeSwing 3s ease-in-out infinite; }
+        .gallery-container::before {
+            content: ''; position: absolute; top: 90px; left: -10%; width: 120%; height: 4px;
+            background: #795548; z-index: 1; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .slide { min-width: 85%; margin: 0 15px; transition: all 0.6s ease; filter: blur(4px); opacity: 0.4; transform: scale(0.8); position: relative; z-index: 2; }
+        .slide.active { filter: blur(0); opacity: 1; transform: scale(1); animation: activeSwing 3s ease-in-out infinite; }
         
-        /* Film Frame: Solid Bottom for Description */
+        .film-frame::before {
+            content: '▼'; position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
+            color: var(--coco-yellow); font-size: 25px; text-shadow: 0 2px 2px rgba(0,0,0,0.3);
+        }
+
         .film-frame { 
-            background: var(--film-black); 
-            padding: 45px 15px 35px 15px; 
-            border-radius: 8px; 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.4); 
-            position: relative; 
-            display: flex;
-            flex-direction: column;
-            width: 100%;
+            background: #ffffff; 
+            padding: 15px; 
+            border: 8px solid var(--coco-green);
+            outline: 5px solid var(--coco-yellow);
+            border-radius: 20px; 
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2); 
+            display: flex; flex-direction: column; width: 100%; position: relative;
         }
-        /* Film holes at TOP only */
-        .film-frame::before { 
-            content: ''; position: absolute; left: 0; width: 100%; height: 20px; 
-            background-image: radial-gradient(circle, #fff 40%, transparent 45%); 
-            background-size: 30px 20px; z-index: 3; top: 12px;
-        }
-        
-        .slide img { 
-            width: 100%; 
-            display: block; 
-            border-radius: 4px; 
-            aspect-ratio: 1; 
-            object-fit: cover; 
-            border: 2px solid #333;
-            margin-bottom: 20px;
-        }
+        .slide img { width: 100%; border-radius: 10px; aspect-ratio: 1; object-fit: cover; margin-bottom: 10px; }
+        .frame-title { font-family: 'Fredoka'; font-size: 1.4rem; color: #333; text-align: center; font-weight: 600; margin-bottom: 2px; }
+        .frame-desc { font-family: 'Outfit'; font-size: 0.85rem; color: #666; text-align: center; font-style: italic; }
 
-        .frame-content {
-            color: white;
-            text-align: center;
-            padding: 0 5px;
-            word-wrap: break-word;
-        }
-        .frame-title { font-family: 'Fredoka'; font-size: 1.5rem; color: var(--c-yellow); margin-bottom: 8px; }
-        .frame-desc { font-size: 1rem; line-height: 1.5; opacity: 0.95; font-weight: 300; }
-
-        .hanging-point { position: absolute; top: -35px; left: 50%; transform: translateX(-50%); width: 2px; height: 40px; background: #555; }
-        .hanging-point::after { content: '📎'; position: absolute; top: -12px; left: -10px; font-size: 20px; }
-
-        /* --- CONTROLS --- */
         .controls { display: flex; justify-content: center; gap: 20px; margin: 10px 0 30px 0; }
-        .nav-btn { background: var(--modern-purple-blue); color: white; border: none; width: 55px; height: 55px; border-radius: 50%; cursor: pointer; box-shadow: 0 8px 20px rgba(99,102,241,0.3); }
+        .nav-btn { background: var(--coco-green); color: white; border: 4px solid #fff; width: 60px; height: 60px; border-radius: 50%; cursor: pointer; box-shadow: 0 6px 0px #27ae60; }
+        .nav-btn:active { transform: translateY(4px); box-shadow: 0 2px 0px #27ae60; }
 
-        /* --- MODERN ANONYMOUS SWITCH --- */
-        .guestbook { background: rgba(255, 255, 255, 0.4); margin: 20px; padding: 30px; border-radius: 40px; border: 1px solid white; }
-        
-        .modern-switch {
-            display: flex; align-items: center; gap: 12px; margin-bottom: 15px; cursor: pointer;
-            background: rgba(255,255,255,0.5); padding: 10px 15px; border-radius: 50px; width: fit-content;
+        #cocoNotify {
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            background: white; border: 4px solid var(--coco-green); padding: 15px 25px;
+            border-radius: 30px; z-index: 20000; display: flex; align-items: center; gap: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); transition: top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .modern-switch input { display: none; }
-        .slider { width: 40px; height: 20px; background: #ccc; border-radius: 20px; position: relative; transition: .3s; }
-        .slider::before { content: ""; position: absolute; height: 14px; width: 14px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: .3s; }
-        input:checked + .slider { background: var(--modern-purple-blue); }
-        input:checked + .slider::before { transform: translateX(20px); }
-        .switch-label { font-size: 0.9rem; font-weight: 600; color: #444; }
 
-        /* --- GUESTBOOK INPUTS --- */
-        input, textarea { width: 100%; padding: 15px; margin: 8px 0; border-radius: 18px; border: none; font-family: inherit; font-size: 1rem; }
-        .btn-post { background: var(--modern-purple-blue); color: white; border: none; padding: 18px; border-radius: 20px; width: 100%; cursor: pointer; font-weight: 600; font-size: 1rem; }
+        #scrollNote {
+            position: fixed; bottom: 20px; right: 20px; background: var(--coco-yellow);
+            padding: 12px 20px; border-radius: 50px; border: 3px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1); font-family: 'Fredoka';
+            z-index: 9999; animation: bounce 2s infinite; cursor: pointer; display: flex; align-items: center; gap: 8px;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
 
-        .vault-area { margin-top: 40px; border-top: 2px dashed rgba(255,255,255,0.5); padding-top: 25px; text-align: center; }
-        .pw-field { max-width: 250px; text-align: center; background: rgba(255,255,255,0.8); }
+        .guestbook { background: rgba(255, 255, 255, 0.4); margin: 20px; padding: 30px; border-radius: 40px; border: 1px solid white; }
+        input, textarea { width: 100%; padding: 15px; margin: 8px 0; border-radius: 18px; border: none; font-family: inherit; }
+        .btn-post { background: var(--coco-red); color: white; border: 4px solid #fff; padding: 18px; border-radius: 25px; width: 100%; cursor: pointer; font-weight: 600; font-family: 'Fredoka'; box-shadow: 0 6px 0px #c0392b; }
 
+        .voice-section { display: flex; gap: 10px; margin: 10px 0; }
+        .btn-voice { flex: 1; background: var(--coco-blue); color: white; border: 3px solid white; border-radius: 15px; padding: 10px; cursor: pointer; font-family: 'Fredoka'; box-shadow: 0 4px 0px #2980b9; }
+        .btn-voice.recording { background: #e74c3c; animation: pulse 1s infinite; }
+
+        .wish-card { background: white; padding: 15px; border-radius: 20px; margin-bottom: 12px; border-left: 6px solid var(--coco-blue); position: relative; }
+        .wish-actions { margin-top: 10px; display: flex; gap: 10px; }
+        .btn-sm { background: #eee; border: none; padding: 5px 10px; border-radius: 8px; font-size: 0.7rem; cursor: pointer; font-weight: 600; }
+
+        .vault-area { display: none; }
+
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
         @keyframes activeSwing { 0%, 100% { transform: scale(1) rotate(-1.5deg); } 50% { transform: scale(1.03) rotate(1.5deg); } }
     </style>
 </head>
-<body>
+<body onclick="startMusic()">
+
+    <div id="cocoNotify">
+        <i class="fas fa-star" style="color: var(--coco-yellow);"></i>
+        <span style="font-family:'Fredoka'; color:#2d3436;" id="notifyMsg">Magical wish saved!</span>
+    </div>
+
+    <div id="musicToggle" onclick="toggleMusic(event)">
+        <i id="musicIcon" class="fas fa-music" style="color: #2ecc71;"></i>
+    </div>
+
+    <div id="scrollNote" onclick="document.getElementById('guestbook').scrollIntoView({behavior:'smooth'})">
+        <i class="fas fa-comment"></i> Write a Wish!
+    </div>
 
     <nav>
-        <div class="coco-text">
+        <div class="coco-text" onclick="handleAdminTap()">
             <span>C</span><span>o</span><span>C</span><span>o</span><span>m</span><span>e</span><span>l</span><span>o</span><span>n</span>
         </div>
     </nav>
 
     <section class="hero">
         <div class="floating-logo"><img src="Cocomelon-Logo.png" alt="Logo"></div>
-        <h1>THE BIG ONE</h1>
-        <div class="hero-details">
-            <i class="fas fa-calendar-star"></i> February 6, 2026 • Nathan's Special Day
-        </div>
-        
-        <div class="countdown">
+        <h1 id="heroTitle">THE BIG ONE</h1>
+        <div class="hero-details"><i class="fas fa-calendar-star"></i> Feb 6, 2026 • Nathan's Special Day</div>
+        <div class="countdown" id="timerRow">
             <div class="count-box"><span class="count-num" id="days">00</span><span class="count-lab">Days</span></div>
             <div class="count-box"><span class="count-num" id="hours">00</span><span class="count-lab">Hrs</span></div>
             <div class="count-box"><span class="count-num" id="mins">00</span><span class="count-lab">Min</span></div>
         </div>
     </section>
 
-    <div class="gallery-container" id="galleryContainer">
+    <div class="gallery-container">
         <div class="slider-track" id="sliderTrack"></div>
     </div>
 
@@ -166,158 +167,281 @@
         <button class="nav-btn" onclick="changeSlide(1)"><i class="fas fa-chevron-right"></i></button>
     </div>
 
-    <section class="guestbook">
-        <h3 style="text-align:center; font-family:'Fredoka'; color:#4c1d95; margin-top:0;">BEST WISHES</h3>
+    <section class="guestbook" id="guestbook">
+        <h3 style="text-align:center; font-family:'Fredoka'; color:#4c1d95;">BEST WISHES</h3>
         
-        <label class="modern-switch">
-            <input type="checkbox" id="isAnon" onchange="toggleAnon()">
-            <span class="slider"></span>
-            <span class="switch-label">Post Anonymously</span>
-        </label>
+        <div id="inputForm">
+            <input type="text" id="vName" placeholder="Your Name">
+            <textarea id="vMsg" rows="3" placeholder="Message..."></textarea>
+            <div class="voice-section">
+                <button class="btn-voice" id="recBtn" onclick="startRec()"><i class="fas fa-microphone"></i> Record</button>
+                <button class="btn-voice" id="stopBtn" onclick="stopRec()" style="display:none; background:#e74c3c;">Stop</button>
+                <button class="btn-voice" id="retakeBtn" onclick="retakeRec()" style="display:none; background:var(--coco-yellow); color:#333;">Retake</button>
+            </div>
+            <audio id="vPreview" controls style="display:none; width:100%; margin-bottom:10px;"></audio>
+            <button class="btn-post" id="submitBtn" onclick="addPost()">POST MESSAGE</button>
+        </div>
 
-        <input type="text" id="vName" placeholder="Your Full Name">
-        <textarea id="vMsg" rows="3" placeholder="Write a birthday message..."></textarea>
-        <button class="btn-post" onclick="addPost()">POST MESSAGE</button>
         <div id="posts" style="margin-top:20px;"></div>
-        
-        <div class="vault-area">
-            <p style="font-size:0.8rem; color:#666;">Admin Download Section</p>
-            <input type="password" id="vPass" class="pw-field" placeholder="Enter Vault Password">
-            <button class="btn-post" style="background:#444; margin-top:10px;" onclick="downloadPDF()">DOWNLOAD ALL AS PDF</button>
+
+        <div id="adminVault" class="vault-area" style="text-align:center; border-top:1px dashed #ccc; padding-top:20px; margin-top:20px;">
+            <p style="font-size: 0.8rem; color: #666;">Admin Memory Access</p>
+            <input type="password" id="vPass" style="max-width:200px; text-align:center;" placeholder="Vault Password">
+            <button class="btn-post" style="background:#444; font-size:0.8rem;" onclick="downloadVault()">DOWNLOAD MEMORY VAULT</button>
         </div>
     </section>
 
+    <audio id="bgMusic" loop></audio>
+
     <script>
-        // --- FIREBASE CONFIGURATION ---
         const firebaseConfig = {
             apiKey: "AIzaSyCUxdS965zf_KhmWo7gA3rwpDNbahZaBb8",
             authDomain: "nathan-birthday-b5c96.firebaseapp.com",
             projectId: "nathan-birthday-b5c96",
-            storageBucket: "nathan-birthday-b5c96.firebasestorage.app",
-            messagingSenderId: "596124074832",
-            appId: "1:596124074832:web:0166f445efdccd8b2b6255",
             databaseURL: "https://nathan-birthday-b5c96-default-rtdb.firebaseio.com"
         };
-
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
         const wishesRef = database.ref('wishes');
 
-        // --- COUNTDOWN LOGIC ---
+        let isBirthday = false;
+        let editingId = null;
+        let mediaRecorder;
+        let audioChunks = [];
+        let audioBase64 = null;
+        let musicStarted = false;
+        let adminClicks = 0;
+
+        const galleryData = [
+            { title: "Newborn", desc: "The start of our greatest adventure!", img: "0.jpg" },
+            { title: "1 Month", desc: "Slowly waking up to the world.", img: "1.jpg" },
+            { title: "2 Months", desc: "First smiles and sweet baby coos.", img: "2.jpg" },
+            { title: "3 Months", desc: "Strong, brave, and already winning hearts like a little soldier in training.", img: "3.jpg" },
+            { title: "4 Months", desc: "Discovering how to grab everything!", img: "4.jpg" },
+            { title: "5 Months", desc: "Almost rolling over and full of energy.", img: "5.jpg" },
+            { title: "6 Months", desc: "Small hands, big dreams, and a future full of winning shots.", img: "6.jpg" },
+            { title: "7 Months", desc: "Sitting up like a little big boy.", img: "7.jpg" },
+            { title: "8 Months", desc: "Bringing more sweetness than scares this spooky season.", img: "8.jpg" },
+            { title: "9 Months", desc: "Clearly unimpressed, but still impossibly cute in every way.", img: "9.jpg" },
+            { title: "10 Months", desc: "Smiling through the ride and enjoying every little adventure along the way.", img: "10.jpg" },
+            { title: "11 Months", desc: "A happy smile that makes every meal and moment feel extra special.", img: "11.jpg" },
+            { title: "One Year!", desc: "Nathan's Big One! Happy Birthday!", img: "12.jpg" }
+        ];
+
+        window.onscroll = function() {
+            let scrollNote = document.getElementById('scrollNote');
+            let guestbook = document.getElementById('guestbook');
+            let guestbookTop = guestbook.getBoundingClientRect().top;
+            if (guestbookTop < window.innerHeight - 100) {
+                scrollNote.style.opacity = "0";
+                scrollNote.style.visibility = "hidden";
+            } else {
+                scrollNote.style.opacity = "1";
+                scrollNote.style.visibility = "visible";
+            }
+        };
+
+        function handleAdminTap() {
+            adminClicks++;
+            if(adminClicks >= 3) {
+                document.getElementById('adminVault').style.display = 'block';
+                document.getElementById('adminVault').scrollIntoView({behavior:'smooth'});
+                adminClicks = 0;
+            }
+            setTimeout(() => { adminClicks = 0; }, 2000);
+        }
+
+        function showCocoNotify(msg) {
+            const toast = document.getElementById('cocoNotify');
+            document.getElementById('notifyMsg').innerText = msg;
+            toast.style.top = "20px";
+            setTimeout(() => { toast.style.top = "-100px"; }, 4000);
+        }
+
+        const wheelsOnBus = "WOTB.mp3";
+        const happyBirthday = "HBD.mp3"; 
+        const audioEl = document.getElementById('bgMusic');
+        audioEl.volume = 0.3;
+
+        function startMusic() {
+            if(!musicStarted) {
+                audioEl.src = isBirthday ? happyBirthday : wheelsOnBus;
+                audioEl.play().catch(() => {});
+                musicStarted = true;
+            }
+        }
+
+        function toggleMusic(e) {
+            e.stopPropagation();
+            if (audioEl.paused) {
+                audioEl.play();
+                document.getElementById('musicIcon').className = "fas fa-music";
+            } else {
+                audioEl.pause();
+                document.getElementById('musicIcon').className = "fas fa-volume-mute";
+            }
+        }
+
         const target = new Date("February 6, 2026 00:00:00").getTime();
         function updateTimer() {
             const now = new Date().getTime();
             const gap = target - now;
-            if (gap < 0) { document.querySelector('.countdown').innerHTML = "<h2>IT'S PARTY TIME! 🎂</h2>"; return; }
+            if (gap <= 0) {
+                if(!isBirthday && musicStarted) { audioEl.src = happyBirthday; audioEl.play(); }
+                isBirthday = true;
+                document.getElementById('timerRow').innerHTML = "<h2>IT'S PARTY TIME! 🎂</h2>";
+                return;
+            }
             document.getElementById('days').innerText = Math.floor(gap / (1000 * 60 * 60 * 24)).toString().padStart(2, '0');
             document.getElementById('hours').innerText = Math.floor((gap % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
             document.getElementById('mins').innerText = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
         }
         setInterval(updateTimer, 1000); updateTimer();
 
-        // --- GALLERY DATA ---
-        const galleryData = [
-            { title: "Newborn", desc: "Day 1: A star was born! You were so tiny and perfect.", img: "0.jpg" },
-            { title: "1 Month", desc: "First smiles! Seeing your eyes light up changed our world.", img: "1.jpg" },
-            { title: "2 Months", desc: "Discovering your hands and giggling at everything!", img: "2.jpg" },
-            { title: "3 Months", desc: "Strong, brave, and already winning hearts like a little soldier in training.", img: "3.jpg" },
-            { title: "4 Months", desc: "Grabbing toys and finding your voice. Such a loud baby!", img: "4.jpg" },
-            { title: "5 Months", desc: "Almost sitting up! You love watching the birds outside.", img: "5.jpg" },
-            { title: "6 Months", desc: "Small hands, big dreams, and a future full of winning shots.", img: "6.jpg" },
-            { title: "7 Months", desc: "Sitting up tall and playing with your favorite Nathan toys.", img: "7.jpg" },
-            { title: "8 Months", desc: "Bringing more sweetness than scares this spooky season.", img: "8.jpg" },
-            { title: "9 Months", desc: "Clearly unimpressed, but still impossibly cute in every way.", img: "9.jpg" },
-            { title: "10 Months", desc: "Smiling through the ride and enjoying every little adventure along the way.", img: "10.jpg" },
-            { title: "11 Months", desc: "A happy smile that makes every meal and moment feel extra special.", img: "11.jpg" },
-            { title: "ONE YEAR!", desc: "Happy 1st Birthday! Our first year together was magic.", img: "12.jpg" }
-        ];
+        async function startRec() {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = [];
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(audioChunks, { type: 'audio/webm' });
+                const reader = new FileReader();
+                reader.readAsDataURL(blob);
+                reader.onloadend = () => {
+                    audioBase64 = reader.result;
+                    const preview = document.getElementById('vPreview');
+                    preview.src = audioBase64;
+                    preview.style.display = "block";
+                    document.getElementById('retakeBtn').style.display = "block";
+                };
+            };
+            mediaRecorder.start();
+            document.getElementById('recBtn').style.display = "none";
+            document.getElementById('stopBtn').style.display = "block";
+        }
+        function stopRec() { mediaRecorder.stop(); document.getElementById('stopBtn').style.display = "none"; }
+        function retakeRec() {
+            audioBase64 = null;
+            document.getElementById('vPreview').style.display = "none";
+            document.getElementById('retakeBtn').style.display = "none";
+            document.getElementById('recBtn').style.display = "block";
+        }
+
+        function addPost() {
+            const name = document.getElementById('vName').value.trim();
+            const msg = document.getElementById('vMsg').value.trim();
+            if(!name || (!msg && !audioBase64)) return alert("Fill in name and message!");
+            const postData = { name, msg, voice: audioBase64 || null, time: new Date().toLocaleString() };
+            
+            if(editingId) {
+                wishesRef.child(editingId).update(postData).then(() => {
+                    showCocoNotify("Wish updated successfully! ✨");
+                });
+                editingId = null;
+                document.getElementById('submitBtn').innerText = "POST MESSAGE";
+            } else {
+                const newRef = wishesRef.push();
+                newRef.set(postData).then(() => {
+                    let myPosts = JSON.parse(localStorage.getItem('myNathanWishes') || "[]");
+                    myPosts.push(newRef.key);
+                    localStorage.setItem('myNathanWishes', JSON.stringify(myPosts));
+                    showCocoNotify("Your wish is now in the guestbook! 🍉");
+                });
+            }
+            document.getElementById('vName').value = "";
+            document.getElementById('vMsg').value = "";
+            retakeRec();
+            confetti({ particleCount: 100 });
+        }
+
+        function deletePost(id) { if(confirm("Delete wish?")) wishesRef.child(id).remove(); }
+
+        function editPost(id, name, msg, voice) {
+            editingId = id;
+            document.getElementById('vName').value = name;
+            document.getElementById('vMsg').value = msg;
+            if(voice) {
+                audioBase64 = voice;
+                const preview = document.getElementById('vPreview');
+                preview.src = voice;
+                preview.style.display = "block";
+                document.getElementById('recBtn').style.display = "none";
+                document.getElementById('retakeBtn').style.display = "block";
+            }
+            document.getElementById('submitBtn').innerText = "UPDATE MESSAGE";
+            document.getElementById('guestbook').scrollIntoView();
+        }
+
+        wishesRef.on('value', snap => {
+            const postsDiv = document.getElementById('posts');
+            postsDiv.innerHTML = "";
+            const myPosts = JSON.parse(localStorage.getItem('myNathanWishes') || "[]");
+            snap.forEach(child => {
+                const d = child.val();
+                const id = child.key;
+                const isOwner = myPosts.includes(id);
+                if (isOwner || isBirthday) {
+                    const card = document.createElement('div');
+                    card.className = "wish-card";
+                    let voiceHtml = d.voice ? `<audio controls src="${d.voice}" style="height:30px; width:100%; margin-top:10px;"></audio>` : "";
+                    let actions = isOwner ? `<div class="wish-actions"><button class="btn-sm" onclick="editPost('${id}', '${d.name}', '${d.msg}', ${d.voice ? `'${d.voice}'` : 'null'})">Edit</button><button class="btn-sm" style="color:red" onclick="deletePost('${id}')">Delete</button></div>` : "";
+                    card.innerHTML = `<strong>${d.name}:</strong><br>${d.msg}${voiceHtml}${actions}<br><small style="color:#999">${d.time}</small>`;
+                    postsDiv.prepend(card);
+                }
+            });
+        });
 
         const track = document.getElementById('sliderTrack');
-        let wishes = [];
-
         galleryData.forEach((item, i) => {
             const slide = document.createElement('div');
             slide.className = `slide ${i === 0 ? 'active' : ''}`;
-            slide.innerHTML = `
-                <div class="hanging-point"></div>
-                <div class="film-frame">
-                    <img src="${item.img}" onerror="this.src='https://via.placeholder.com/600/333/fff?text=Photo+${i}'">
-                    <div class="frame-content">
-                        <div class="frame-title">${item.title}</div>
-                        <div class="frame-desc">${item.desc}</div>
-                    </div>
-                </div>`;
+            slide.innerHTML = `<div class="film-frame"><img src="${item.img}" onerror="this.src='https://via.placeholder.com/400?text=Month+${i}'"><div class="frame-title">${item.title}</div><div class="frame-desc">${item.desc}</div></div>`;
             track.appendChild(slide);
         });
 
         let currentIdx = 0;
-        const slides = document.querySelectorAll('.slide');
-
-        function updateGallery() {
-            const width = slides[0].offsetWidth + 30;
-            track.style.transform = `translateX(${-currentIdx * width}px)`;
+        function changeSlide(dir) {
+            const slides = document.querySelectorAll('.slide');
+            currentIdx = (currentIdx + dir + galleryData.length) % galleryData.length;
+            track.style.transform = `translateX(${-currentIdx * (slides[0].offsetWidth + 30)}px)`;
             slides.forEach((s, i) => s.classList.toggle('active', i === currentIdx));
         }
 
-        function changeSlide(dir) {
-            currentIdx = (currentIdx + dir + galleryData.length) % galleryData.length;
-            updateGallery();
-        }
-
-        // --- GUESTBOOK FUNCTIONS ---
-        function toggleAnon() {
-            const field = document.getElementById('vName');
-            const isChecked = document.getElementById('isAnon').checked;
-            field.value = isChecked ? "Anonymous Guest" : "";
-            field.disabled = isChecked;
-        }
-
-        function addPost() {
-            const nameField = document.getElementById('vName'), msgField = document.getElementById('vMsg');
-            let name = nameField.value.trim(), msg = msgField.value.trim();
-            if(!name || !msg) { alert("Please fill everything!"); return; }
-
-            // Save to Firebase
-            const newPostRef = wishesRef.push();
-            newPostRef.set({
-                name: name,
-                msg: msg,
-                time: new Date().toLocaleString()
-            }).then(() => {
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.7 } });
-                msgField.value = "";
-                if(!document.getElementById('isAnon').checked) nameField.value = "";
-            }).catch(err => alert("Error saving: " + err.message));
-        }
-
-        // Live Listener to fetch posts from Firebase
-        wishesRef.on('value', (snapshot) => {
-            const postsDiv = document.getElementById('posts');
-            postsDiv.innerHTML = "";
-            wishes = []; 
-            snapshot.forEach((childSnapshot) => {
-                const data = childSnapshot.val();
-                wishes.push(data);
-                const p = document.createElement('div');
-                p.style.cssText = "background:white; padding:18px; border-radius:18px; margin-bottom:12px; border-left:6px solid #6366f1; box-shadow:0 4px 12px rgba(0,0,0,0.06);";
-                p.innerHTML = `<strong>${data.name}:</strong> ${data.msg}<br><small style="color:#bbb">${data.time}</small>`;
-                postsDiv.prepend(p);
+        function downloadVault() {
+            if(document.getElementById('vPass').value !== "natoynakamahalmhal") return alert("Wrong Password");
+            
+            wishesRef.once('value', snap => {
+                let htmlContent = `
+                <html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Nathan's Memory Book</title>
+                <style>
+                    body { font-family: sans-serif; background: #e8f5e9; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+                    .wish { background: white; padding: 25px; border-radius: 20px; margin-bottom: 20px; width: 100%; max-width: 500px; border-left: 10px solid #2ecc71; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+                    h1 { color: #2ecc71; text-align: center; }
+                    audio { width: 100%; margin-top: 15px; height: 50px; }
+                </style></head><body>
+                <h1>Nathan's 1st Birthday Memory Vault</h1>`;
+                
+                snap.forEach(c => {
+                    const data = c.val();
+                    htmlContent += `
+                    <div class="wish">
+                        <h3>${data.name}</h3>
+                        <p>${data.msg || "<i>Audio Message Only</i>"}</p>
+                        ${data.voice ? `<audio controls src="${data.voice}"></audio>` : ""}
+                        <br><small style="color:#888">${data.time}</small>
+                    </div>`;
+                });
+                
+                htmlContent += `</body></html>`;
+                
+                const blob = new Blob([htmlContent], {type: 'text/html'});
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = "Nathan_Memory_Vault.html";
+                link.click();
+                showCocoNotify("Memory Vault saved to your phone! 📱");
             });
-        });
-
-        function downloadPDF() {
-            if(document.getElementById('vPass').value !== "natoynakamahalmhal") { alert("Wrong Password"); return; }
-            const { jsPDF } = window.jspdf; const doc = new jsPDF();
-            doc.text("NATHAN'S BIG ONE - WISHES", 20, 20);
-            let y = 35;
-            wishes.forEach(w => {
-                if(y > 270) { doc.addPage(); y = 20; }
-                doc.text(`${w.time} - ${w.name}: ${w.msg}`, 20, y); y += 15;
-            });
-            doc.save("Wishes.pdf");
         }
-        updateGallery();
     </script>
 </body>
 </html>
