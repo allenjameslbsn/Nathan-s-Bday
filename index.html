@@ -316,25 +316,36 @@
         setInterval(updateTimer, 1000); updateTimer();
 
         async function startRec() {
-            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-            mediaRecorder = new MediaRecorder(stream);
-            audioChunks = [];
-            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
-            mediaRecorder.onstop = () => {
-                const blob = new Blob(audioChunks, { type: 'audio/webm' });
-                const reader = new FileReader();
-                reader.readAsDataURL(blob);
-                reader.onloadend = () => {
-                    audioBase64 = reader.result;
-                    const preview = document.getElementById('vPreview');
-                    preview.src = audioBase64;
-                    preview.style.display = "block";
-                    document.getElementById('retakeBtn').style.display = "block";
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                
+                // Fix for iPhone: Detect supported MIME type
+                let mimeType = 'audio/webm';
+                if (!MediaRecorder.isTypeSupported(mimeType)) {
+                    mimeType = 'audio/mp4'; // iPhone fallback
+                }
+
+                mediaRecorder = new MediaRecorder(stream, { mimeType: mimeType });
+                audioChunks = [];
+                mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(audioChunks, { type: mimeType });
+                    const reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onloadend = () => {
+                        audioBase64 = reader.result;
+                        const preview = document.getElementById('vPreview');
+                        preview.src = audioBase64;
+                        preview.style.display = "block";
+                        document.getElementById('retakeBtn').style.display = "block";
+                    };
                 };
-            };
-            mediaRecorder.start();
-            document.getElementById('recBtn').style.display = "none";
-            document.getElementById('stopBtn').style.display = "block";
+                mediaRecorder.start();
+                document.getElementById('recBtn').style.display = "none";
+                document.getElementById('stopBtn').style.display = "block";
+            } catch (err) {
+                alert("Please allow microphone access to record.");
+            }
         }
         function stopRec() { mediaRecorder.stop(); document.getElementById('stopBtn').style.display = "none"; }
         function retakeRec() {
